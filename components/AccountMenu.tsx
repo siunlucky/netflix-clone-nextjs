@@ -1,3 +1,4 @@
+import useCurrentuser from "@/hooks/useCurrentUser";
 import { signOut } from "next-auth/react";
 import React from "react";
 
@@ -8,6 +9,8 @@ interface AccountMenuProps {
 const AccountMenu: React.FC<AccountMenuProps> = ({
     visible
 }) => {
+    const { data } = useCurrentuser();
+
     if (!visible) {
         return null;
     }

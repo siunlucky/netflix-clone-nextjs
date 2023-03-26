@@ -1,6 +1,10 @@
 import React from "react";
+import { useRouter } from "next/router";
 
 import { BsFillPlayFill } from "react-icons/bs";
+import { BiChevronDown } from "react-icons/bi";
+import FavoriteButton from "./FavoriteButton";
+import useInfoModal from "@/hooks/useInfoModal";
 
 interface MovieCardProps {
     data: Record<string, any>;
@@ -9,6 +13,9 @@ interface MovieCardProps {
 const MovieCard: React.FC<MovieCardProps> = ({
     data
 }) => {
+    const router = useRouter();
+    const { openModal } = useInfoModal();
+
     return (
         <div className="group bg-zinc-900 col-span relative h-[12vw]">
             <img className="cursor-pointer object-cover transition duration shadow-xl rounded-md group-hover:opacity-90 sm:group-hover:opacity-0 delay-300 w-full h-[12vw]" src={data.thumbnailUrl} alt="Thumbnail" />
@@ -16,8 +23,12 @@ const MovieCard: React.FC<MovieCardProps> = ({
                 <img className="cursor-pointer object-cover transition duration shadow-xl rounded-t-md w-full h-[12vw]" src={data.thumbnailUrl} alt="Thumbnail" />
                 <div className="absolute z-10 w-full p-2 transition shadow-md bg-zinc-800 lg:p-4 rounded-b-md">
                     <div className="flex flex-row items-center gap-3">
-                        <div onClick={() => { }} className="flex items-center justify-center w-6 h-6 transition bg-white rounded-full cursor-pointer lg:w-10 lg:h-10 hover:bg-neutral-300">
+                        <div onClick={() => { router.push(`/watch/${data?.id}`) }} className="flex items-center justify-center w-6 h-6 transition bg-white rounded-full cursor-pointer lg:w-10 lg:h-10 hover:bg-neutral-300">
                             <BsFillPlayFill size={30} />
+                        </div>
+                        <FavoriteButton movieId={data?.id} />
+                        <div onClick={() => openModal(data?.id)} className="cursor-pointer ml-auto group/item w-6 h-6 lg:w-10 lg:h-10 border-white border-2 rounded-full flex justify-center items-center transition hover:border-neutral-300">
+                            <BiChevronDown size={30} className="text-white group-hover/item:text-neutral-300" />
                         </div>
                     </div>
                     <p className="mt-4 font-semibold text-green-400">
